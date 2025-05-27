@@ -71,3 +71,5 @@ Thumbs.db
 
 # Logs
 *.log
+notebooks/google-api-key.txt
+notebooks/google-search_engine-id.txt
