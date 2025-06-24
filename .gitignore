@@ -73,3 +73,6 @@ Thumbs.db
 *.log
 notebooks/google-api-key.txt
 notebooks/google-search_engine-id.txt
+src/customer_service_db.py
+notebooks/customer_service.db
+workspace/*
