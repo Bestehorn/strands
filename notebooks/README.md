@@ -95,6 +95,21 @@ A comprehensive tutorial series introducing the Strands AI agents framework. Eac
 **Concepts:** Stateful memory, agent collaboration, dynamic routing, persistent state  
 **Description:** Implement advanced multi-agent patterns including stateful agents with persistent memory, inter-agent collaboration, and intelligent routing that learns from experience. Build production-ready systems with database integration.
 
+### Tutorial 17: Swarm Intelligence Fundamentals
+**File:** `17_swarm_fundamentals.ipynb`  
+**Concepts:** Collective intelligence, built-in swarm tool, coordination patterns, multi-agent analysis  
+**Description:** Master swarm intelligence basics using the built-in swarm tool. Learn collaborative, competitive, and hybrid coordination patterns while building market research swarms that outperform single agents.
+
+### Tutorial 18: Custom Mesh Swarms
+**File:** `18_custom_mesh_swarms.ipynb`  
+**Concepts:** Mesh architecture, SharedMemory, specialized agents, multi-phase processing  
+**Description:** Build sophisticated mesh swarm architectures from scratch with direct agent communication. Create specialized agent teams with research, creative, critical, and synthesizer roles for customer feedback analysis.
+
+### Tutorial 19: Advanced Swarm Systems
+**File:** `19_advanced_swarm_systems.ipynb`  
+**Concepts:** RAG integration, production swarms, workflow orchestration, monitoring, enterprise deployment  
+**Description:** Build enterprise-ready swarm systems that combine collective intelligence with document analysis, robust error handling, and comprehensive monitoring for business intelligence applications.
+
 ## 🎯 Learning Paths
 
 ### Beginner Track (Tutorials 1-3)
@@ -108,6 +123,10 @@ Build on the basics with more advanced features:
 ### Advanced Track (Tutorials 9-16)
 Master production-ready techniques:
 9. RAG Basics → 10. Advanced RAG → 11-14. MCP Series → 15. Agents as Tools → 16. Advanced Agent Patterns
+
+### Swarm Intelligence Track (Tutorials 17-19)
+Master collective AI and multi-agent swarms:
+17. Swarm Fundamentals → 18. Custom Mesh Swarms → 19. Advanced Swarm Systems
 
 ### Optional Extensions
 - Tutorial 2.5: Example Tools Package (after Tutorial 2)
@@ -186,4 +205,4 @@ Special thanks to:
 
 **Happy Learning!** 🎓🤖✨
 
-*Last updated: June 2025 - Now with 16 complete tutorials + 2 optional extensions!*
+*Last updated: June 2025 - Now with 19 complete tutorials + 2 optional extensions!*
