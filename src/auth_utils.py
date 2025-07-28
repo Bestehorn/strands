@@ -8,9 +8,13 @@ supporting both the new AWS Bedrock API keys and traditional AWS authentication 
 import boto3
 import os
 from typing import Dict, Any, Optional
+from strands.models import BedrockModel
 
+
+DEFAULT_MODEL = "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
 
 class AuthStatus:
+
     """
     Authentication status class that provides clean access to authentication details.
     
@@ -19,13 +23,15 @@ class AuthStatus:
     """
     
     def __init__(self, method: str, detail: str, success: bool, 
-                 region: str, profile: Optional[str] = None, message: str = ""):
+                 region: str, profile: Optional[str] = None, message: str = "",
+                 session: Optional[boto3.Session] = None):
         self.method = method
         self.detail = detail
         self.success = success
         self.region = region
         self.profile = profile
         self.message = message
+        self.session = session
     
     def __str__(self) -> str:
         """Human-readable string representation."""
@@ -35,7 +41,8 @@ class AuthStatus:
         """Developer-friendly representation."""
         return (f"AuthStatus(method='{self.method}', detail='{self.detail}', "
                 f"success={self.success}, region='{self.region}', "
-                f"profile={self.profile}, message='{self.message}')")
+                f"profile={self.profile}, message='{self.message}', "
+                f"has_session={self.session is not None})")
     
     def __getitem__(self, key: str):
         """Dictionary-style access for backward compatibility."""
@@ -66,12 +73,27 @@ class AuthStatus:
     def is_successful(self) -> bool:
         """Convenience property to check authentication success."""
         return self.success
+    
+    @property
+    def bedrock_client(self):
+        """Convenience property to get a Bedrock runtime client from the session."""
+        if self.session and self.success:
+            return self.session.client('bedrock-runtime')
+        return None
+    
+    @property
+    def strands_bedrock_model(self, model_id: str = DEFAULT_MODEL) -> BedrockModel | None:
+        """Convenience property to get a BedrockModel instance for Strands."""
+        if self.session and self.success:
+            return BedrockModel(boto_session=self.session, model_id=model_id)
+        return None
 
 
 def setup_bedrock_auth(
     api_key: str = "",
     region_name: str = "us-west-2",
-    aws_profile: str = "default"
+    aws_profile: str = "default",
+    model_id: str = DEFAULT_MODEL,
 ) -> AuthStatus:
     """
     Set up AWS Bedrock authentication using API keys or traditional AWS credentials.
@@ -105,6 +127,10 @@ def _setup_api_key_auth(api_key: str, region_name: str) -> AuthStatus:
     if len(api_key) < 20:
         print("⚠️  Warning: Your API key seems too short. Please verify it's correct.")
         print("   API keys are typically much longer than 20 characters.")
+    
+    # Create a boto3 session with the specified region
+    # The API key will be picked up from the environment variable
+    session = boto3.Session(region_name=region_name)
         
     return AuthStatus(
         method='API Key',
@@ -112,7 +138,8 @@ def _setup_api_key_auth(api_key: str, region_name: str) -> AuthStatus:
         success=True,
         region=region_name,
         profile=None,
-        message='API Key authentication configured successfully'
+        message='API Key authentication configured successfully',
+        session=session
     )
 
 
@@ -144,7 +171,8 @@ def _setup_aws_profile_auth(region_name: str, aws_profile: str) -> AuthStatus:
                 success=True,
                 region=region_name,
                 profile=aws_profile,
-                message='AWS Profile authentication configured successfully'
+                message='AWS Profile authentication configured successfully',
+                session=session
             )
         else:
             print("❌ No AWS credentials found!")
@@ -160,7 +188,8 @@ def _setup_aws_profile_auth(region_name: str, aws_profile: str) -> AuthStatus:
                 success=False,
                 region=region_name,
                 profile=aws_profile,
-                message='No AWS credentials found'
+                message='No AWS credentials found',
+                session=None
             )
             
     except Exception as e:
@@ -173,7 +202,8 @@ def _setup_aws_profile_auth(region_name: str, aws_profile: str) -> AuthStatus:
             success=False,
             region=region_name,
             profile=aws_profile,
-            message=f'Error checking credentials: {e}'
+            message=f'Error checking credentials: {e}',
+            session=None
         )
 
 
