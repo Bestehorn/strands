@@ -189,7 +189,7 @@ Database utilities and examples for customer service applications, demonstrating
 ### **1. Install Dependencies**
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/Bestehorn/strands.git
 cd strands
 
 # Install core requirements
